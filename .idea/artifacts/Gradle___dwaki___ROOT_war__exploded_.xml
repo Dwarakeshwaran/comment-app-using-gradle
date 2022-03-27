@@ -1,0 +1,35 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Gradle : dwaki : ROOT.war (exploded)">
+    <output-path>$PROJECT_DIR$/build/libs/exploded/ROOT.war</output-path>
+    <properties id="gradle-properties">
+      <options external-project-path="$PROJECT_DIR$">
+        <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQoNCg==</manifest>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/build/libs/exploded/ROOT.war/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="commentapp_main/web/Web Gradle : ROOT.war" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="commentapp_main" />
+          <element id="dir-copy" path="$PROJECT_DIR$/out/production/resources" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Gradle: org.springframework:spring-webmvc:5.3.17" />
+          <element id="library" level="project" name="Gradle: jstl:jstl:1.2" />
+          <element id="library" level="project" name="Gradle: mysql:mysql-connector-java:8.0.28" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-context:5.3.17" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-aop:5.3.17" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-web:5.3.17" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.3.17" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.3.17" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.3.17" />
+          <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.3.17" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/3.11.4/7ec0925cc3aef0335bbc7d57edfd42b0f86f8267/protobuf-java-3.11.4.jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
