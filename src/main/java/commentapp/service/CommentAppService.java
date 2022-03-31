@@ -1,9 +1,12 @@
 package commentapp.service;
 
 import commentapp.config.DbConfig;
+import commentapp.model.Comment;
 import org.springframework.stereotype.Service;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CommentAppService {
@@ -80,5 +83,66 @@ public class CommentAppService {
                 return results.getString(2);
         }
         return password;
+    }
+
+    public void saveCommentToDb(String comments, String email) throws SQLException {
+
+        try{
+            String sql = "INSERT INTO commentapp.comments_table (comments, email_id) VALUES (?,?)";
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, comments);
+            stmt.setString(2, email);
+
+            stmt.executeUpdate();
+
+        }catch (Exception e) {
+            System.out.println("Exception Occurred while Inserting Data to DB " + e);
+        }
+    }
+
+    public List<Comment> getCommentList() throws SQLException {
+
+        List<Comment> commentList = new ArrayList<>();
+
+        String sql = "SELECT * FROM commentapp.comments_table";
+
+        Statement stmt = connection.createStatement();
+
+        ResultSet results = stmt.executeQuery(sql);
+
+        commentList = getCommentList(commentList, results);
+
+        return commentList;
+    }
+
+
+    public List<Comment> filterCommentsByEmailId(String email) throws SQLException {
+
+        List<Comment> filteredCommentList = new ArrayList<>();
+
+        String sql = "SELECT * FROM commentapp.comments_table WHERE email_id = ?";
+
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setString(1, email);
+
+        ResultSet results = stmt.executeQuery();
+
+        filteredCommentList = getCommentList(filteredCommentList, results);
+
+        return filteredCommentList;
+    }
+
+    private List<Comment> getCommentList(List<Comment> commentList, ResultSet results) throws SQLException {
+        while(results.next()){
+
+            Comment comment = new Comment();
+            comment.setComments(results.getString(1));
+            comment.setEmail(results.getString(2));
+
+            commentList.add(comment);
+
+        }
+        return commentList;
     }
 }
