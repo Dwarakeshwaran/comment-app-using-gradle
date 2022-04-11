@@ -85,18 +85,40 @@ public class CommentAppService {
         return password;
     }
 
+    public boolean isCommentExists(String comment) {
+
+        boolean flag = true;
+
+        try {
+            String sql = "SELECT * FROM commentapp.comments_table WHERE comments = ?";
+
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, comment.trim());
+
+            ResultSet data = stmt.executeQuery();
+
+            while (data.next())
+                flag = false;
+
+        } catch (Exception e) {
+            System.out.println("Exception Occurred Fetching Comment Data from DB " + e);
+        }
+
+        return flag;
+    }
+
     public void saveCommentToDb(String comments, String email) throws SQLException {
 
-        try{
+        try {
             String sql = "INSERT INTO commentapp.comments_table (comments, email_id) VALUES (?,?)";
 
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setString(1, comments);
-            stmt.setString(2, email);
+            stmt.setString(1, comments.trim());
+            stmt.setString(2, email.trim());
 
             stmt.executeUpdate();
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Exception Occurred while Inserting Data to DB " + e);
         }
     }
@@ -124,7 +146,7 @@ public class CommentAppService {
         String sql = "SELECT * FROM commentapp.comments_table WHERE email_id = ?";
 
         PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setString(1, email);
+        stmt.setString(1, email.trim());
 
         ResultSet results = stmt.executeQuery();
 
@@ -134,7 +156,7 @@ public class CommentAppService {
     }
 
     private List<Comment> getCommentList(List<Comment> commentList, ResultSet results) throws SQLException {
-        while(results.next()){
+        while (results.next()) {
 
             Comment comment = new Comment();
             comment.setComments(results.getString(1));

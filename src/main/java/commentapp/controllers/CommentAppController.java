@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import commentapp.service.CommentAppService;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,113 +27,97 @@ public class CommentAppController {
     private CommentAppService service;
 
 
-    @RequestMapping("/test")
-    public String home() {
-        return "index";
-    }
+    @RequestMapping(method = RequestMethod.GET, value = "/comment-page")
+    public String commentPage(HttpServletRequest request, HttpServletResponse response, Model model) throws SQLException, IOException {
 
-    @RequestMapping("/")
-    public String check() {
-        return "test";
-    }
+        response.setHeader("Cache-Control","no-cache"); //Forces caches to obtain a new copy of the page from the origin server
+        response.setHeader("Cache-Control","no-store"); //Directs caches not to store the page under any circumstance
+        response.setDateHeader("Expires", 0); //Causes the proxy cache to see the page as "stale"
+        response.setHeader("Pragma","no-cache"); //HTTP 1.0 backward compatibility
 
-    @RequestMapping("/login")
-    public String login() {
-        return "login";
-    }
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
 
-    @RequestMapping("/signup")
-    public String signup() {
-        return "signup";
-    }
-
-
-
-    @RequestMapping("/submit-comment")
-    public String commentPage(String email, Model model) throws SQLException {
-        List<Comment> commentList = service.getCommentList();
-        model.addAttribute("commentList", commentList);
-        model.addAttribute("email", email);
-        model.addAttribute("filterCheck", false);
-        return "comment-page";
-    }
-
-    @RequestMapping("/forgot-password")
-    public String forgotPassword() {
-        return "forgot-password";
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/process-login")
-    public String processLoginRequest(User user, Model model) throws SQLException {
-
-        if (service.validateUser(user.getEmail(), user.getPassword())){
-
-            return commentPage(user.getEmail(), model);
-        }
-
-        else {
-            model.addAttribute("invalid", true);
+        if (email == null) {
+            response.sendRedirect("login");
             return "login";
-        }
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/register-user")
-    public String processSignUpRequest(User user, Model model) throws SQLException {
-
-        if (!service.userIsExists(user.getEmail()))
-            service.insertUser(user.getEmail(), user.getPassword(), user.getSecretCode());
-        else {
-            model.addAttribute("existsAlready", true);
-            return "signup";
-        }
-
-        return "login";
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value = "/reset-password")
-    public String processForgotPasswordRequest(User user, Model model) throws SQLException {
-
-        String password = service.resetPassword(user.getEmail(), user.getSecretCode());
-
-        System.out.println("Password: " + password);
-
-        if (password != null) {
-            model.addAttribute("passwordAvailability", true);
-            model.addAttribute("password", password);
-            return "forgot-password";
         } else {
-            model.addAttribute("passwordAvailability", false);
-            return "forgot-password";
+            List<Comment> commentList = service.getCommentList();
+            model.addAttribute("commentList", commentList);
+            model.addAttribute("email", email);
+            model.addAttribute("filterCheck", false);
+            return "comment-page";
         }
 
     }
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/submit-comment")
-    public String saveComment(Comment comment, Model model) throws SQLException {
+    public String saveComment(@RequestParam("comments") String comment, HttpServletRequest request, HttpServletResponse response, Model model)
+            throws SQLException, IOException {
 
-        service.saveCommentToDb(comment.getComments(), comment.getEmail());
-        model.addAttribute("email", comment.getEmail());
+        response.setHeader("Cache-Control","no-cache"); //Forces caches to obtain a new copy of the page from the origin server
+        response.setHeader("Cache-Control","no-store"); //Directs caches not to store the page under any circumstance
+        response.setDateHeader("Expires", 0); //Causes the proxy cache to see the page as "stale"
+        response.setHeader("Pragma","no-cache"); //HTTP 1.0 backward compatibility
 
-        List<Comment> commentList = service.getCommentList();
-        model.addAttribute("commentList", commentList);
-        model.addAttribute("filterCheck", false);
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
 
-        return "comment-page";
+        System.out.println(email);
+        System.out.println(comment);
+
+        if (email == null) {
+            response.sendRedirect("login");
+            return "login";
+        } else {
+            if (!comment.isEmpty() && service.isCommentExists(comment)) {
+                service.saveCommentToDb(comment, email);
+                model.addAttribute("email", email);
+
+                List<Comment> commentList = service.getCommentList();
+                model.addAttribute("commentList", commentList);
+                model.addAttribute("filterCheck", false);
+
+                return "comment-page";
+
+            } else {
+                if(comment.isEmpty())
+                    model.addAttribute("emptyComment", true);
+                else if(service.isCommentExists(comment) == false)
+                    model.addAttribute("duplicateComment", true);
+
+                return "comment-page";
+            }
+        }
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/filter-comments")
-    public String getComments(@RequestParam("email") String email, Model model) throws SQLException {
+    public String getComments(HttpServletRequest request, HttpServletResponse response, Model model) throws SQLException, IOException {
 
-        model.addAttribute("email", email);
+        response.setHeader("Cache-Control","no-cache"); //Forces caches to obtain a new copy of the page from the origin server
+        response.setHeader("Cache-Control","no-store"); //Directs caches not to store the page under any circumstance
+        response.setDateHeader("Expires", 0); //Causes the proxy cache to see the page as "stale"
+        response.setHeader("Pragma","no-cache"); //HTTP 1.0 backward compatibility
 
-        System.out.println(email);
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
 
-        List<Comment> filteredCommentList = service.filterCommentsByEmailId(email);
-        model.addAttribute("filteredCommentList", filteredCommentList);
-        model.addAttribute("filterCheck", true);
+        if (email == null) {
+            response.sendRedirect("login");
+            return "login";
+        } else {
+            model.addAttribute("email", email);
 
-        return "comment-page";
+            System.out.println(email);
+
+            List<Comment> filteredCommentList = service.filterCommentsByEmailId(email);
+            model.addAttribute("filteredCommentList", filteredCommentList);
+            model.addAttribute("filterCheck", true);
+
+            return "comment-page";
+        }
+
     }
 
 }

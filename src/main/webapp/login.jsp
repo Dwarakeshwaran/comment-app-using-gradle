@@ -12,6 +12,7 @@
     <title>Login</title>
 </head>
 <body>
+
     <div align="center">
 
         <h1>Sign In</h1><br><br>
@@ -22,7 +23,7 @@
             <input type="text" id="emailId" name="email"> <br><br>
 
             <label for="pass">Password</label>
-            <input type="text" id="pass" name="password"> <br><br>
+            <input type="password" id="pass" name="password"> <br><br>
 
             <a href="forgot-password">Forgot your password?</a><br><br>
 
@@ -31,7 +32,7 @@
         </form>
 
         <c:if test="${invalid == true}">
-            <h2>Invalid Email Id and Password</h2>
+            <h2 style="color:red">Invalid Email Id and Password</h2>
         </c:if>
     </div>
 

@@ -12,7 +12,6 @@
     <title>SignUp</title>
 </head>
 <body>
-
 <div align="center">
 
     <h1>Sign Up</h1><br><br>
@@ -23,7 +22,7 @@
         <input type="text" id="emailId" name="email"> <br><br>
 
         <label for="pass">Password</label>
-        <input type="text" id="pass" name="password"> <br><br>
+        <input type="password" id="pass" name="password"> <br><br>
 
         <label for="secret">Secret</label>
         <input type="text" id="secret" name="secretCode"> <br><br>

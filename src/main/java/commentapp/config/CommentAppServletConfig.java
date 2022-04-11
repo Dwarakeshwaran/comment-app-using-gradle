@@ -13,15 +13,15 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @ComponentScan(basePackages = "commentapp")
 public class CommentAppServletConfig {
 
-    @Bean
-    public ViewResolver viewResolver() {
+        @Bean
+        public ViewResolver viewResolver() {
 
-        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("/");
-        viewResolver.setSuffix(".jsp");
+            InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+            viewResolver.setPrefix("/");
+            viewResolver.setSuffix(".jsp");
 
-        return viewResolver;
+            return viewResolver;
 
-    }
+        }
 
 }
