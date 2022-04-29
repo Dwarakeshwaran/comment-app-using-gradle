@@ -27,3 +27,11 @@ dependencies {
 war {
     archiveName 'ROOT.war'
 }
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'commentapp.config.CommentAppInitializer'
+        )
+    }
+}

@@ -12,7 +12,7 @@ public class DbConfig {
 
         String userName = "root";
         String password = "root";
-        String url = "jdbc:mysql://localhost:3306/commentapp";
+        String url = "jdbc:mysql://commentapp-dbserver:3306/commentapp?user=root&password=root";
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -20,7 +20,7 @@ public class DbConfig {
             System.out.println("DB Connected");
             return connection;
         } catch (Exception e) {
-            System.out.println("Exception Occurred while Connecting to DB " + e);
+            System.out.println("Exception Occurred while Connecting to DB and this URL: "+url+" " + e);
             return null;
         }
 

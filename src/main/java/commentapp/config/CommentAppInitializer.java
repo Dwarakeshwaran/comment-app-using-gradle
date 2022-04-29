@@ -13,7 +13,7 @@ public class CommentAppInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
 
-        System.out.println("CommentAppInitializer Started");
+        System.out.println("CommentAppInitializer Started in Docker Container");
 
         AnnotationConfigWebApplicationContext webContainer = new AnnotationConfigWebApplicationContext();
         webContainer.register(CommentAppServletConfig.class);

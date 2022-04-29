@@ -26,8 +26,8 @@
           <element id="library" level="project" name="Gradle: org.springframework:spring-beans:5.3.17" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-expression:5.3.17" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-core:5.3.17" />
+          <element id="library" level="project" name="Gradle: com.google.protobuf:protobuf-java:3.11.4" />
           <element id="library" level="project" name="Gradle: org.springframework:spring-jcl:5.3.17" />
-          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/3.11.4/7ec0925cc3aef0335bbc7d57edfd42b0f86f8267/protobuf-java-3.11.4.jar" />
         </element>
       </element>
     </root>

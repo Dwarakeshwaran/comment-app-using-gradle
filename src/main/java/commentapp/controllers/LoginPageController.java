@@ -59,14 +59,20 @@ public class LoginPageController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/register-user")
-    public String processSignUpRequest(User user, Model model) throws SQLException {
+    public String processSignUpRequest(User user, Model model, HttpServletResponse response) throws SQLException, IOException {
 
-        if (!service.userIsExists(user.getEmail()))
+        if (!service.userIsExists(user.getEmail()) && !user.getEmail().isEmpty() && !user.getPassword().isEmpty() && !user.getSecretCode().isEmpty())
             service.insertUser(user.getEmail(), user.getPassword(), user.getSecretCode());
         else {
-            model.addAttribute("existsAlready", true);
+            if (user.getEmail().isEmpty() || user.getPassword().isEmpty() || user.getSecretCode().isEmpty())
+                model.addAttribute("invalid", true);
+            else if(service.userIsExists(user.getEmail()) == false)
+                model.addAttribute("existsAlready", true);
+
             return "signup";
         }
+
+        response.sendRedirect("login");
 
         return "login";
     }

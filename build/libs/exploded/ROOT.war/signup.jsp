@@ -28,7 +28,11 @@
         <input type="text" id="secret" name="secretCode"> <br><br>
 
         <c:if test="${existsAlready == true}">
-            <h2>User Already exists</h2> <br><br>
+            <h2 style="color:red">User Already exists</h2> <br><br>
+        </c:if>
+
+        <c:if test="${invalid == true}">
+            <h2 style="color:red">Please Enter the Details...</h2> <br><br>
         </c:if>
 
         <input type="submit" value="Sign Up">
