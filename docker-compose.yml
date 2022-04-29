@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  commentapp-mysql:
+    image: dwarki/commentapp-dbserver
+    container_name: commentapp-dbserver
+    volumes:
+      - commentapp:/var/lib/mysql
+  commentapp-spring:
+    image: dwarki/commentapp-appserver
+    ports:
+      - 7070:8080
+    links:
+      - commentapp-mysql
+
+volumes:
+  commentapp:
